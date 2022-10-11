@@ -119,6 +119,7 @@ int main()
 	}
 
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1);
 
 	if (glewInit() != GLEW_OK)
 
@@ -146,6 +147,7 @@ int main()
 	GLCall(glEnableVertexAttribArray(0));
 	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
 
+	// index buffer object
 	unsigned int ibo;
 	GLCall(glGenBuffers(1, &ibo));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
@@ -153,14 +155,31 @@ int main()
 
 
 	ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
-
 	unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
 	GLCall(glUseProgram(shader));
 
+	GLCall(int location = glGetUniformLocation(shader, "u_Color"));
+	ASSERT(location != -1);
+	GLCall(glUniform4f(location, 1.0f, 0.3f, 0.8f, 0.1f));
+
+	float r = 0.0f;
+	float increment_r = 0.05f;
+
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
+
+		
+		GLCall(glUniform4f(location, r, 0.3f, 0.8f, 0.1f));
 		GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+
+		if (r > 1.0f)
+			increment_r = -0.05f;
+		if (r < 0.0f)
+			increment_r = 0.05f;
+
+		r += increment_r;
 
 		GLCall(glfwSwapBuffers(window));
 		GLCall(glfwPollEvents());
