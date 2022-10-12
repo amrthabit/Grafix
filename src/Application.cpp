@@ -5,27 +5,10 @@
 #include <string>
 #include <sstream>
 
-#define ASSERT(x) if(!(x)) __debugbreak();	
-#define GLCall(x) GLClearError();\
-	x;\
-	ASSERT(GLLogCall(#x, __FILE__, __LINE__))
-
-
-static void GLClearError()
-{
-	while (glGetError() != GL_NO_ERROR);
-}
-
-static bool GLLogCall(const char* function, const char* file, int line)
-{
-	while (GLenum error = glGetError())
-	{
-		std::cout << "[OpenGL Error]: " << error << " at " << function << "\n  "
-			<< file << ": " << line << std::endl;
-		return false;
-	};
-	return true;
-}
+#include "Renderer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexArray.h"
 
 struct ShaderProgramSource
 {
@@ -110,6 +93,9 @@ int main()
 	if (!glfwInit())
 		return -1;
 
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	window = glfwCreateWindow(640, 480, "yass", NULL, NULL);
 	if (!window)
@@ -126,66 +112,69 @@ int main()
 		std::cout << "GLEWINIT ERR" << std::endl;
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
-
-	float positions[] = {
-		-0.5f, -0.5f,
-		0.5f , -0.5f,
-		0.5f, 0.5f,
-		-0.5f, 0.5f
-	};
-
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0,
-	};
-
-	unsigned int buffer;
-	GLCall(glGenBuffers(1, &buffer));
-	GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-	GLCall(glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), positions, GL_STATIC_DRAW));
-
-	GLCall(glEnableVertexAttribArray(0));
-	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
-
-	// index buffer object
-	unsigned int ibo;
-	GLCall(glGenBuffers(1, &ibo));
-	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
-
-
-	ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
-	unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
-	GLCall(glUseProgram(shader));
-
-	GLCall(int location = glGetUniformLocation(shader, "u_Color"));
-	ASSERT(location != -1);
-	GLCall(glUniform4f(location, 1.0f, 0.3f, 0.8f, 0.1f));
-
-	float r = 0.0f;
-	float increment_r = 0.05f;
-
-	
-	while (!glfwWindowShouldClose(window))
 	{
-		GLCall(glClear(GL_COLOR_BUFFER_BIT));
+		float positions[] = {
+			-0.5f, -0.5f,
+			0.5f , -0.5f,
+			0.5f, 0.5f,
+			-0.5f, 0.5f
+		};
 
-		
-		GLCall(glUniform4f(location, r, 0.3f, 0.8f, 0.1f));
-		GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+		unsigned int indices[] = {
+			0, 1, 2,
+			2, 3, 0,
+		};
 
-		if (r > 1.0f)
-			increment_r = -0.05f;
-		if (r < 0.0f)
-			increment_r = 0.05f;
+		VertexArray va;
+		VertexBuffer vb(positions, 4 * 2 * sizeof(float));
 
-		r += increment_r;
+		VertexBufferLayout layout;
+		layout.Push<float>(2);
+		va.AddBuffer(vb, layout);
 
-		GLCall(glfwSwapBuffers(window));
-		GLCall(glfwPollEvents());
+		IndexBuffer ib(indices, 6);
+
+		ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
+		unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
+		GLCall(glUseProgram(shader));
+
+		GLCall(int location = glGetUniformLocation(shader, "u_Color"));
+		ASSERT(location != -1);
+		GLCall(glUniform4f(location, 1.0f, 0.3f, 0.8f, 0.1f));
+
+		va.Unbind();
+		GLCall(glUseProgram(0));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+
+		float r = 0.0f;
+		float increment_r = 0.05f;
+
+
+		while (!glfwWindowShouldClose(window))
+		{
+			GLCall(glClear(GL_COLOR_BUFFER_BIT));
+
+			GLCall(glUseProgram(shader));
+			GLCall(glUniform4f(location, r, 0.9f, 0.1f, 0.1f));
+
+			va.Bind();
+			ib.Bind(); 
+
+			GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+
+			if (r > 1.0f)
+				increment_r = -0.05f;
+			if (r < 0.0f)
+				increment_r = 0.05f;
+
+			r += increment_r;
+
+			GLCall(glfwSwapBuffers(window));
+			GLCall(glfwPollEvents());
+		}
+		GLCall(glDeleteProgram(shader));
 	}
-	GLCall(glDeleteProgram(shader));
-
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
