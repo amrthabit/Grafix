@@ -9,12 +9,16 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+#include "Shader.h"
+#include "VertexBufferLayout.h"
+#include "Texture.h"
 
-struct ShaderProgramSource
-{
-	std::string VertexSource;
-	std::string FragmentSource;
-};
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw_gl3.h"
+
+#include "tests/TestClearColor.h"
 
 static ShaderProgramSource ParseShader(const std::string& filepath)
 {
@@ -97,7 +101,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(640, 480, "yass", NULL, NULL);
+	window = glfwCreateWindow(1080, 720, "yass", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -113,68 +117,34 @@ int main()
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	{
-		float positions[] = {
-			-0.5f, -0.5f,
-			0.5f , -0.5f,
-			0.5f, 0.5f,
-			-0.5f, 0.5f
-		};
+		GLCall(glEnable(GL_BLEND));
+		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-		unsigned int indices[] = {
-			0, 1, 2,
-			2, 3, 0,
-		};
+		Renderer renderer;
 
-		VertexArray va;
-		VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+		ImGui::CreateContext();
+		ImGui_ImplGlfwGL3_Init(window, true);
+		ImGui::StyleColorsDark();
 
-		VertexBufferLayout layout;
-		layout.Push<float>(2);
-		va.AddBuffer(vb, layout);
-
-		IndexBuffer ib(indices, 6);
-
-		ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
-		unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
-		GLCall(glUseProgram(shader));
-
-		GLCall(int location = glGetUniformLocation(shader, "u_Color"));
-		ASSERT(location != -1);
-		GLCall(glUniform4f(location, 1.0f, 0.3f, 0.8f, 0.1f));
-
-		va.Unbind();
-		GLCall(glUseProgram(0));
-		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
-		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-
-		float r = 0.0f;
-		float increment_r = 0.05f;
-
+		test::TestClearColor test;
 
 		while (!glfwWindowShouldClose(window))
 		{
-			GLCall(glClear(GL_COLOR_BUFFER_BIT));
+			renderer.Clear();
+			test.OnUpdate(0.0f);
+			test.OnRender();
+			ImGui_ImplGlfwGL3_NewFrame();
+			test.OnImGuiRender();
 
-			GLCall(glUseProgram(shader));
-			GLCall(glUniform4f(location, r, 0.9f, 0.1f, 0.1f));
-
-			va.Bind();
-			ib.Bind(); 
-
-			GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-
-			if (r > 1.0f)
-				increment_r = -0.05f;
-			if (r < 0.0f)
-				increment_r = 0.05f;
-
-			r += increment_r;
+			ImGui::Render();
+			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
 			GLCall(glfwSwapBuffers(window));
 			GLCall(glfwPollEvents());
 		}
-		GLCall(glDeleteProgram(shader));
 	}
+	ImGui_ImplGlfwGL3_Shutdown();
+	ImGui::DestroyContext();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
