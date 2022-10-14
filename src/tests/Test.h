@@ -4,6 +4,8 @@
 #include <functional>
 #include <iostream>
 
+struct GLFWwindow;
+
 namespace test {
 
 	class Test
@@ -30,10 +32,15 @@ namespace test {
 			std::cout << "Registering test " << name << std::endl;
 			m_Tests.push_back(std::make_pair(name, []() { return new T(); }));
 		}
+		
+		template<typename T>
+		void RegisterTestWithWindow(const std::string& name, GLFWwindow* window)
+		{
+			std::cout << "Registering test " << name << std::endl;
+			m_Tests.push_back(std::make_pair(name, [&]() { return new T(window); }));
+		}
 	private:
 		Test*& m_CurrentTest;
 		std::vector<std::pair<std::string, std::function<Test* ()>>> m_Tests;
-		// window
-		float m_WindowWidth, m_WindowHeight;
 	};
 }

@@ -1,6 +1,7 @@
 #include "TestColor3D.h"
 
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "Renderer.h"
 #include "imgui/imgui.h"
 
@@ -9,19 +10,17 @@
 
 namespace test {
 
-	TestColor3D::TestColor3D()
-		// Camera Projection:
-		/*perspective with 30 degree fov in height, 4 / 3 for aspect ratio, near at 0.1, far at 1000
-		Window Size :
-	width 1024 x height 768*/
+	TestColor3D::TestColor3D(GLFWwindow* window)
 		: m_Proj(glm::perspective(glm::radians(30.0f), 4.0f / 3.0f, 0.1f, 1000.0f)),
 		m_View(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0))),
 		m_TranslationA(0, 0, 0), m_TranslationB(0, 0, 0),
 		m_Rotation1(0, 0, 0),
 		m_CameraPosition(0, 0, 0),
 		m_CameraDirection(0, 0, -1),
-		m_CameraUp(0, 1, 0)
+		m_CameraUp(0, 1, 0),
+		m_Window(window)
 	{
+
 		float positions[] = {
 			-1.0f, -1.0f, 0.0f, 0.0f,
 			 1.0f, -1.0f, 1.0f, 0.0f,
@@ -53,7 +52,7 @@ namespace test {
 		m_CameraDirection = glm::vec3(0, 0, 0) - m_CameraPosition;
 	}
 
-	TestColor3D::~TestColor3D()
+		TestColor3D::~TestColor3D()
 	{
 	}
 
@@ -88,9 +87,9 @@ namespace test {
 			renderer.Draw(*m_VAO, *m_IndexBuffer, *m_Shader);
 		};
 
-		drawSquare(glm::vec3( 1, 0, 0), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0, 0, 1));
+		drawSquare(glm::vec3(1, 0, 0), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0, 0, 1));
 		drawSquare(glm::vec3(-1, 0, 0), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0, 0, 1));
-		drawSquare(glm::vec3( 0, 1, 0), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0, 1, 1));
+		drawSquare(glm::vec3(0, 1, 0), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0, 1, 1));
 
 	}
 
@@ -103,12 +102,4 @@ namespace test {
 		ImGui::SliderFloat3("Camera Direction", &m_CameraDirection.x, -10.0f, 10.0f);
 		ImGui::SliderFloat3("Camera Up", &m_CameraUp.x, -1.0f, 1.0f);
 	}
-
-	/*void KeyPressEvent(GLFWwindow* window, int key, int scancode, int action, int mods)
-	{
-		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
-	}*/
-
-
 }

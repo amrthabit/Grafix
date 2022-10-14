@@ -69,14 +69,13 @@ int main()
 		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
 		testMenu->RegisterTest<test::TestColor2D>("2D Color");
-		testMenu->RegisterTest<test::TestColor3D>("3D Color");
+		testMenu->RegisterTestWithWindow<test::TestColor3D>("3D Color", window);
 
 		while (!glfwWindowShouldClose(window))
 		{
-			GLCall(glClearColor(0.0f, 0.0f, 0.0f, 0.0f));
 			renderer.Clear();
-
 			ImGui_ImplGlfwGL3_NewFrame();
+			
 			if (currentTest)
 			{
 				currentTest->OnUpdate(0.0f);

@@ -6,14 +6,15 @@
 #include "VertexBufferLayout.h"
 #include "Texture.h"
 
-
 #include <memory>
+
+struct GLFWwindow;
 
 namespace test {
 	class TestColor3D : public Test
 	{
 	public:
-		TestColor3D();
+		TestColor3D(GLFWwindow* window);
 		~TestColor3D();
 
 		void OnUpdate(float deltaTime) override;
@@ -34,7 +35,6 @@ namespace test {
 		glm::vec3 m_CameraDirection;
 		glm::vec3 m_CameraUp;
 		
-
-		
+		GLFWwindow* m_Window;
 	};
 }
