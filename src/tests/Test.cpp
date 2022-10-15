@@ -4,7 +4,6 @@
 namespace test {
 	TestMenu::TestMenu(Test*& currentTestPointer)
 		: m_CurrentTest(currentTestPointer)
-		
 	{
 	}
 
@@ -20,6 +19,9 @@ namespace test {
 				m_CurrentTest = test.second();
 		}
 	}
-
-	
+	 
+	void TestMenu::GoBack()
+	{
+		m_CurrentTest = this;
+	}
 }

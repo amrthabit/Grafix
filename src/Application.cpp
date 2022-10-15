@@ -24,6 +24,9 @@
 #include "tests/TestColor2D.h"
 #include "tests/TestColor3D.h"
 
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 768
+
 int main()
 {
 	GLFWwindow* window;
@@ -34,8 +37,10 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	window = glfwCreateWindow(1024, 768, "3GC3 A1", NULL, NULL);
+	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "3GC3 A1", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -56,8 +61,6 @@ int main()
 		
 		Renderer renderer;
 
-		//GLCall(glEnable(GL_DEPTH_TEST));
-
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(window, true);
 		ImGui::StyleColorsDark();
@@ -65,11 +68,11 @@ int main()
 		test::Test* currentTest = nullptr;
 		test::TestMenu* testMenu = new test::TestMenu(currentTest);
 		currentTest = testMenu;
-
+		
 		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
 		testMenu->RegisterTest<test::TestColor2D>("2D Color");
-		testMenu->RegisterTestWithWindow<test::TestColor3D>("3D Color", window);
+		testMenu->RegisterTestWithWindow<test::TestColor3D>("3D Color", window, testMenu);
 
 		while (!glfwWindowShouldClose(window))
 		{
