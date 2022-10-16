@@ -11,14 +11,28 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
+#include "DrawLine.h"
+
+#define EARTH 1
+#define MOON 2
+#define SUN 3
+
 namespace test {
 	class TestColor3D : public Test
 	{
 	public:
 		TestColor3D(
 			GLFWwindow* window,
-			TestMenu* testMenu
-			);
+			TestMenu* testMenu,
+			glm::vec3 inititialCameraPosition = glm::vec3(0.0f, 0.0f, 3.0f),
+			bool solarSystem = false,
+			float day = 0,
+			bool play = false,
+			int cameraFollow = 0
+		);
 		~TestColor3D();
 
 		void OnUpdate(float deltaTime) override;
@@ -43,10 +57,6 @@ namespace test {
 		glm::mat4 m_Proj, m_View;
 		glm::vec3 m_TranslationA, m_TranslationB;
 		glm::vec3 m_Rotation1;
-		glm::vec3 m_CameraPosition;
-		glm::vec3 m_CameraDirection;
-		glm::vec3 m_CameraRight;
-		glm::vec3 m_CameraUp;
 
 		GLFWwindow* m_Window;
 
@@ -57,5 +67,18 @@ namespace test {
 
 		TestMenu* m_TestMenu;
 		bool m_PressedKeys[GLFW_KEY_LAST];
+		bool m_ImGuiWindowCollapsed;
+
+		Line m_AxisLines[3];
+
+		bool m_SolarSystem;
+		float m_Day;
+		bool m_Play;
+		int m_CameraFollow;
+	protected:
+		glm::vec3 m_CameraPosition;
+		glm::vec3 m_CameraDirection;
+		glm::vec3 m_CameraRight;
+		glm::vec3 m_CameraUp;
 	};
 }
