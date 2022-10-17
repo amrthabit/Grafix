@@ -5,9 +5,11 @@ namespace test {
 		GLFWwindow* window,
 		TestMenu* testMenu
 	) : TestColor3D(window, testMenu,
-		glm::vec3(-60.0f, 50.0f, 40.0f),
+		glm::vec3(-30.0f, -40.0f, -50.0f),
 		true,
-		365.0f)
+		365.0f,
+		false,
+		EARTH)
 	{
 	}
 

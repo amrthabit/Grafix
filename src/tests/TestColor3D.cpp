@@ -6,6 +6,8 @@
 #include "imgui/imgui.h"
 #include "Task3Functions.h"
 
+#include "Screenshot.h"
+
 //#define DEBUG
 
 namespace test {
@@ -86,7 +88,10 @@ namespace test {
 		// put camera in world space location
 		m_CameraPosition = inititialCameraPosition;
 		// point camera to center
-		m_CameraDirection = glm::normalize(glm::vec3(0, 0, 0) - m_CameraPosition);
+		if (!m_Play && m_CameraFollow == EARTH)
+			m_CameraDirection = glm::normalize(glm::vec3(20, 0, 0) - m_CameraPosition);
+		else
+			m_CameraDirection = glm::normalize(glm::vec3(0, 0, 0) - m_CameraPosition);
 		// Right axis
 		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 		m_CameraRight = glm::normalize(glm::cross(up, m_CameraDirection));
@@ -125,7 +130,6 @@ namespace test {
 
 		// background
 		GLCall(glClearColor(0.3f, 0.4f, 0.5f, 0.0f));
-		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
 		Renderer renderer;
 
@@ -140,9 +144,6 @@ namespace test {
 			float z = glm::sin(glm::radians(-m_Day / 365.0f * 360.0f)) * planet.orbitRadius;
 
 			if (planet.earth) {
-				if (m_CameraFollow == EARTH) {
-
-				}
 				model = glm::translate(model, glm::vec3(x, 0, z));
 				model = glm::rotate(model, glm::radians(r), glm::vec3(0, 0, -1));
 				model = glm::rotate(model, glm::radians(get_earth_rotate_angle_around_itself(m_Day)), glm::vec3(0, 1, 0));
@@ -166,7 +167,27 @@ namespace test {
 			model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0, 0, 1));
 			model = glm::scale(model, glm::vec3(scale, scale, scale));
 
-			// set up camera
+			if (planet.earth && m_CameraFollow == EARTH)
+			{
+				// make camera follow earth
+				m_CameraDirection = glm::normalize(glm::vec3(x, 0, z) - m_CameraPosition);
+			}
+			else if (planet.sun && m_CameraFollow == SUN)
+			{
+				// already focused on centre
+			}
+			else if (planet.moon && m_CameraFollow == MOON)
+			{
+				// for some reason glm doesn't like getting position directly like this
+				// glm::vec3(model[3])
+				// here's a workaround
+				float moonX = glm::cos(glm::radians(-get_moon_rotate_angle_around_earth(m_Day))) * 10.0f;
+				float moonZ = glm::sin(glm::radians(-get_moon_rotate_angle_around_earth(m_Day))) * 10.0f;
+				glm::vec3 moonPosition = glm::vec3(x + moonX, 0, z + moonZ);
+				m_CameraDirection = glm::normalize(moonPosition - m_CameraPosition);
+			}
+
+			// set up 
 			m_View = glm::lookAt(m_CameraPosition, m_CameraPosition + m_CameraDirection, m_CameraUp);
 
 			glm::mat4 mvp = m_Proj * m_View * model;
@@ -177,7 +198,7 @@ namespace test {
 			renderer.Draw(*m_VAO, *m_IndexBuffer, *m_Shader);
 		};
 
-		auto drawCube = [&](Planet planet = { 1.0f, 0.0f, false, false, false })
+		auto drawCube = [&](Planet planet = { 2.0f, 0.0f, false, false, false })
 		{
 			// front face
 			drawSquare(glm::vec3(0.0f, 0.0f, 1.0f * planet.edgeLength / 2), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1, 0, 1), planet);
@@ -212,7 +233,7 @@ namespace test {
 		m_AxisLines[1].draw();
 		m_AxisLines[2].draw();
 #endif
-		}
+	}
 
 	void TestColor3D::OnImGuiRender()
 	{
@@ -258,6 +279,13 @@ namespace test {
 			if (action == GLFW_PRESS)
 				m_ImGuiWindowCollapsed = !m_ImGuiWindowCollapsed;
 			break;
+		case GLFW_KEY_P:
+			if (action == GLFW_PRESS) {
+				std::cout << "Caputuring Screenshot" << std::endl;
+				Screenshot::TakeScreenshot();
+				std::cout << "Screenshot Capture Done!" << std::endl;
+			}
+			break;
 		}
 	};
 
@@ -283,6 +311,7 @@ namespace test {
 				m_CameraPosition += glm::normalize(glm::cross(m_CameraDirection, m_CameraUp)) * cameraSpeed;
 				break;
 			case GLFW_KEY_SPACE:
+
 				m_CameraPosition += cameraSpeed * m_CameraUp;
 				break;
 			case GLFW_KEY_LEFT_SHIFT:

@@ -6,7 +6,10 @@ namespace test {
 		TestMenu* testMenu
 	) : TestColor3D(window, testMenu,
 		glm::vec3(-60.0f, 50.0f, 40.0f),
-		true)
+		true,
+		0,
+		false,
+		EARTH)
 	{
 	}
 

@@ -16,9 +16,9 @@ float get_earth_rotate_angle_around_itself(float day)
 //moon
 float get_moon_rotate_angle_around_earth(float day)
 {
-	return day * 360.0f / 27.0f;
+	return day * 360.0f / 28.0f;
 }
 float get_moon_rotate_angle_around_itself(float day)
 {
-	return day * 360.0f / 27.0f;
+	return day * 360.0f / 28.0f;
 }

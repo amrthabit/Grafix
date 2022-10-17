@@ -109,7 +109,7 @@ int main()
 			{
 				currentTest->OnUpdate(0.0f);
 				currentTest->OnRender();
-				ImGui::Begin("Test");
+				ImGui::Begin("Assignment 1");
 			/*	if (currentTest != testMenu && ImGui::Button("<-"))
 				{
 					delete currentTest;

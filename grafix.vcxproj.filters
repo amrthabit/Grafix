@@ -1491,6 +1491,9 @@
     <ClInclude Include="src\tests\GC3_A1_Task16.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Screenshot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\eye.jpeg">
