@@ -139,30 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\tests\DrawLine.h" />
-    <ClCompile Include="src\tests\GC3_A1_Task10.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task11.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task12.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task13.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task14.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task15.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task16.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task2.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task1.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task3.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task4.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task5.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task6.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task7.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task8.cpp" />
-    <ClCompile Include="src\tests\GC3_A1_Task9.cpp" />
     <ClCompile Include="src\tests\Test.cpp" />
-    <ClCompile Include="src\tests\TestClearColor.cpp" />
-    <ClCompile Include="src\tests\TestColor2D.cpp" />
     <ClCompile Include="src\tests\TestColor3D.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
     <ClCompile Include="src\Texture.cpp" />
@@ -316,30 +299,14 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\A1.h" />
+    <ClInclude Include="src\InputManager.h" />
     <ClInclude Include="src\Screenshot.h" />
     <ClInclude Include="src\Task3Functions.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task10.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task11.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task12.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task13.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task14.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task15.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task16.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task2.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task1.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task3.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task4.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task5.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task6.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task7.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task8.h" />
-    <ClInclude Include="src\tests\GC3_A1_Task9.h" />
     <ClInclude Include="src\tests\Test.h" />
-    <ClInclude Include="src\tests\TestClearColor.h" />
-    <ClInclude Include="src\tests\TestColor2D.h" />
     <ClInclude Include="src\tests\TestColor3D.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
     <ClInclude Include="src\Texture.h" />

@@ -2,11 +2,12 @@
 #include "imgui/imgui.h"
 
 namespace test {
-	TestMenu::TestMenu(Test*& currentTestPointer)
-		: m_CurrentTest(currentTestPointer)
+	TestMenu::TestMenu(Test*& currentTestPointer, InputManager* inputManager)
+		: m_CurrentTest(currentTestPointer),
+		m_InputManager(inputManager)
 	{
 	}
-
+		
 	TestMenu::~TestMenu()
 	{
 	}
