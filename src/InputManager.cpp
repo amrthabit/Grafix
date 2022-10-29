@@ -9,9 +9,10 @@ InputManager::InputManager(GLFWwindow* window)
 	m_Pitch(0.0f),
 	m_MouseOffset(glm::vec2(0.0f, 0.0f))
 {
+	glfwSetKeyCallback(m_Window, KeyCallbackStatic);
 	glfwSetWindowUserPointer(m_Window, reinterpret_cast<void*>(this));
 	glfwSetCursorPosCallback(m_Window, MouseCallbackStatic);
-	glfwSetKeyCallback(m_Window, KeyCallbackStatic);
+	// todo: keys not working
 	glfwSetMouseButtonCallback(m_Window, MouseButtonCallbackStatic);
 
 	for (int i = 0; i < 1024; i++)
@@ -36,7 +37,6 @@ void InputManager::ShowCursor() {
 }
 
 void InputManager::KeyCallbackStatic(GLFWwindow* window, int key, int scancode, int action, int mods) {
-		std::cout << "pressed" << std::endl;
 	InputManager* that = static_cast<InputManager*>(glfwGetWindowUserPointer(window));
 	that->KeyCallback(window, key, scancode, action, mods);
 };
@@ -80,8 +80,6 @@ void InputManager::MouseCallbackStatic(GLFWwindow* window, double x, double y)
 }
 
 void InputManager::MouseCallback(GLFWwindow* window, double x, double y) {
-	
-	// handle mouse movement
 	float xpos = (float)x;
 	float ypos = (float)y;
 	

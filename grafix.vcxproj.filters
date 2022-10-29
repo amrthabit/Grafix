@@ -69,6 +69,9 @@
     <ClCompile Include="src\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
@@ -481,6 +484,7 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="res\shaders\Color.shader" />
+    <None Include="res\shaders\A2Default.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">
@@ -1393,6 +1397,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\A1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\A2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Assignment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\tinyobjloader\tinyobjloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\TestMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

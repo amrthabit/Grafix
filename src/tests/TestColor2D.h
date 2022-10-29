@@ -6,7 +6,6 @@
 #include "VertexBufferLayout.h"
 #include "Texture.h"
 
-
 #include <memory>
 
 namespace test {

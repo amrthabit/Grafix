@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "A1.h"
+#include "A2.h"
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
@@ -21,10 +21,8 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "3GC3 A1", NULL, NULL);
+	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "3GC3", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -33,7 +31,7 @@ int main()
 
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
-
+	
 	if (glewInit() != GLEW_OK)
 		std::cout << "GLEWINIT ERR" << std::endl;
 
@@ -42,13 +40,13 @@ int main()
 		GLCall(glClearColor(0.3f, 0.4f, 0.5f, 0.0f));
 		GLCall(glEnable(GL_DEPTH_TEST));
 		GLCall(glDepthFunc(GL_LESS));
-		GLCall(glEnable(GL_CULL_FACE));
+		//GLCall(glEnable(GL_CULL_FACE));
 
-		A1 a1(window);
+		A2 assignment(window);
 
 		while (!glfwWindowShouldClose(window))
 		{
-			a1.OnRender();
+			assignment.OnRender();
 
 			GLCall(glfwSwapBuffers(window));
 			GLCall(glfwPollEvents());

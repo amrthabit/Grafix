@@ -35,7 +35,6 @@ namespace test {
 			std::cout << "Registering test " << name << std::endl;
 
 			m_Tests.push_back(std::make_pair(name, [=]() {
-				std::cout << m_InputManager << std::endl;
 				return new T(this, m_InputManager, args...);
 				}));
 		}
@@ -44,7 +43,6 @@ namespace test {
 	private:
 		Test*& m_CurrentTest;
 		InputManager* m_InputManager;
-		GLFWwindow* m_Window;
 		std::vector<std::pair<std::string, std::function<Test* ()>>> m_Tests;
 	};
 }

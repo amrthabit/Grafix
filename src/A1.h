@@ -1,13 +1,6 @@
 #pragma once
 
-#include "tests/Test.h"
-#include "tests/TestColor3D.h"
-#include "InputManager.h"
-
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw_gl3.h"
-
-#include "GLFW/glfw3.h"
+#include "Assignment.h"
 
 using namespace test;
 
@@ -69,11 +62,6 @@ public:
 			currentTest->OnUpdate(0.0f);
 			currentTest->OnRender();
 			ImGui::Begin("Assignment 1");
-			/*	if (currentTest != testMenu && ImGui::Button("<-"))
-				{
-					delete currentTest;
-					currentTest = testMenu;
-				}*/
 			currentTest->OnImGuiRender();
 			ImGui::End();
 		}
