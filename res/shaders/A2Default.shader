@@ -24,5 +24,5 @@ in vec3 v_Normal;
 void main()
 {
 	float c = dot(v_Normal, vec3(0.8, 0.7, 0.6));
-	color = vec4(c, c, c, 0.0);
+	color = vec4(c, c, c, 1.0);
 }

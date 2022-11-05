@@ -40,7 +40,7 @@ int main()
 		GLCall(glClearColor(0.3f, 0.4f, 0.5f, 0.0f));
 		GLCall(glEnable(GL_DEPTH_TEST));
 		GLCall(glDepthFunc(GL_LESS));
-		//GLCall(glEnable(GL_CULL_FACE));
+		GLCall(glEnable(GL_CULL_FACE));
 
 		A2 assignment(window);
 

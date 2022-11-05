@@ -51,7 +51,7 @@ void InputManager::KeyCallback(GLFWwindow* _window, int key, int scancode, int a
 		else if (action == GLFW_RELEASE)
 			m_Keys[key] = false;
 
-		// handle escape since we have _window here
+		
 		switch (key) {
 		case GLFW_KEY_ESCAPE:
 			if (action == GLFW_PRESS)
@@ -59,7 +59,14 @@ void InputManager::KeyCallback(GLFWwindow* _window, int key, int scancode, int a
 			break;
 		case GLFW_KEY_H:
 			if (action == GLFW_PRESS)
-				m_ImGuiWindowCollapsed = !m_ImGuiWindowCollapsed;
+			{
+				if (m_ImGuiWindowCollapsed) {
+					m_ImGuiWindowCollapsed = false;
+				}
+				else {
+					m_ImGuiWindowCollapsed = true;
+				}
+			}
 			break;
 		case GLFW_KEY_P:
 			if (action == GLFW_PRESS) {
@@ -82,7 +89,7 @@ void InputManager::MouseCallbackStatic(GLFWwindow* window, double x, double y)
 void InputManager::MouseCallback(GLFWwindow* window, double x, double y) {
 	float xpos = (float)x;
 	float ypos = (float)y;
-	
+
 	m_MouseLastPos = m_MousePosition;
 	m_MousePosition = glm::vec2(xpos, ypos);
 	float xoffset = xpos - m_MouseLastPos.x;

@@ -8,7 +8,6 @@
 
 #include <GL/glew.h>
 #include "Renderer.h"
-#include "imgui/imgui.h"
 #include "InputManager.h"
 
 #include "glm/glm.hpp"
@@ -18,14 +17,27 @@
 
 #include <memory>
 
+#define BASE 35
+#define CUBE 36
+#define SHAPES_COUNT 37
+
+struct Faces {
+	tinyobj::attrib_t attrib[SHAPES_COUNT];
+	std::vector<tinyobj::shape_t> shapes[SHAPES_COUNT];
+	std::vector<tinyobj::material_t> materials[SHAPES_COUNT];
+};
+
 namespace test {
 	class TestMesh : public Test
 	{
 	public:
-		TestMesh(TestMenu* testMenu, InputManager* inputManager,
-			tinyobj::attrib_t attrib,
-			std::vector<tinyobj::shape_t> shapes,
-			std::vector<tinyobj::material_t> materials);
+		TestMesh(TestMenu* testMenu,
+			InputManager* inputManager,
+			std::shared_ptr<Faces> faces,
+			int index,
+			bool wireframe = false,
+			bool blend = false
+		);
 		~TestMesh();
 
 		void OnUpdate(float deltaTime) override;
@@ -34,6 +46,7 @@ namespace test {
 		void HandleMouse();
 		void HandleKeys();
 		void LeaveTest();
+
 	private:
 		std::unique_ptr<VertexArray> m_VAO;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer;
@@ -50,7 +63,16 @@ namespace test {
 		glm::vec2 m_MouseLastPos;
 		float m_Yaw, m_Pitch;
 
-		std::vector<float>* m_Vertices;
-		std::vector<unsigned int>* m_Indices;
+		std::unique_ptr<std::vector<float>> m_Vertices;
+		std::unique_ptr<std::vector<unsigned int>> m_Indices;
+
+		std::string m_ObjPath;
+		tinyobj::attrib_t m_Attrib;
+		std::vector<tinyobj::shape_t> m_Shapes;
+		std::vector<tinyobj::material_t> m_Materials;
+
+		bool m_Blended;
+
+		ImVec2 m_ImGuiWindowPos;
 	};
 }

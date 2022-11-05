@@ -19,6 +19,7 @@ namespace test {
 		virtual void OnUpdate(float deltaTime) {}
 		virtual void OnRender() {}
 		virtual void OnImGuiRender() {}
+		virtual void GoBack() {}
 	};
 
 	class TestMenu : public Test
@@ -39,7 +40,7 @@ namespace test {
 				}));
 		}
 
-		void GoBack();
+		void GoBack() override;
 	private:
 		Test*& m_CurrentTest;
 		InputManager* m_InputManager;
