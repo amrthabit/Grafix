@@ -88,9 +88,9 @@ namespace test {
 		m_Yaw = glm::degrees(atan2(m_CameraDirection.z, m_CameraDirection.x));
 		m_Pitch = glm::degrees(asin(m_CameraDirection.y));
 
-		std::cout << "mesh created" << std::endl;
-		std::cout << "mesh vertices count: " << m_Attrib.vertices.size() / 3 << std::endl;
-		std::cout << "mesh indices count: " << m_Indices->size() << std::endl;
+		std::cout << "TestMesh>mesh created" << std::endl;
+		std::cout << "TestMesh>mesh vertices count: " << m_Attrib.vertices.size() / 3 << std::endl;
+		std::cout << "TestMesh>mesh indices count: " << m_Indices->size() << std::endl;
 
 		if (wireframe) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -205,7 +205,7 @@ namespace test {
 				m_CameraPosition -= cameraSpeed * m_CameraUp;
 				break;
 			case GLFW_KEY_BACKSPACE:
-				std::cout << "Leaving Test" << std::endl;
+				std::cout << "TestMesh>Leaving Test" << std::endl;
 				TestMesh::LeaveTest();
 				break;
 			case GLFW_KEY_H:

@@ -70,9 +70,9 @@ void InputManager::KeyCallback(GLFWwindow* _window, int key, int scancode, int a
 			break;
 		case GLFW_KEY_P:
 			if (action == GLFW_PRESS) {
-				std::cout << "Caputuring Screenshot" << std::endl;
+				std::cout << "InputManager>Caputuring Screenshot" << std::endl;
 				Screenshot::TakeScreenshot();
-				std::cout << "Screenshot Capture Done!" << std::endl;
+				std::cout << "InputManager>Screenshot Capture Done!" << std::endl;
 			}
 			break;
 		}

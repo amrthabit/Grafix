@@ -38,6 +38,6 @@ public:
 	{
 		int width, height;
 		glfwGetFramebufferSize(glfwGetCurrentContext(), &width, &height);
-        TakeScreenshotWrapper("GC3_A1_", width, height);
+        TakeScreenshotWrapper("GC3_A2_", width, height);
 	}
 };
