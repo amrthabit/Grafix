@@ -158,9 +158,11 @@
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
     <ClCompile Include="src\tests\TestMesh.cpp" />
+    <ClCompile Include="src\tests\TestDisco.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\A2Default.shader" />
+    <None Include="res\shaders\A3.shader" />
     <None Include="res\shaders\Basic.shader" />
     <None Include="res\shaders\Color.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
@@ -301,6 +303,7 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\A3.h" />
     <ClInclude Include="src\A1.h" />
     <ClInclude Include="src\A2.h" />
     <ClInclude Include="src\Assignment.h" />
@@ -609,6 +612,7 @@
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\VertexBufferLayout.h" />
     <ClInclude Include="src\tests\TestMesh.h" />
+    <ClInclude Include="src\tests\TestDisco.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\eye.jpeg" />

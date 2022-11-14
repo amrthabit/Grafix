@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "A2.h"
+#include "A3.h"
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
@@ -42,7 +42,7 @@ int main()
 		GLCall(glDepthFunc(GL_LESS));
 		GLCall(glEnable(GL_CULL_FACE));
 
-		A2 assignment(window);
+		A3 assignment(window);
 
 		while (!glfwWindowShouldClose(window))
 		{

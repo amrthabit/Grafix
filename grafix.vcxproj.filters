@@ -72,6 +72,9 @@
     <ClCompile Include="src\tests\TestMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestDisco.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
@@ -485,6 +488,7 @@
     </None>
     <None Include="res\shaders\Color.shader" />
     <None Include="res\shaders\A2Default.shader" />
+    <None Include="res\shaders\A3.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">
@@ -1409,6 +1413,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\tests\TestMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\A3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\TestDisco.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
