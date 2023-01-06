@@ -5,9 +5,10 @@ InputManager::InputManager(GLFWwindow* window)
 	m_ImGuiWindowCollapsed(false),
 	m_MousePosition(glm::vec2(0.0f, 0.0f)),
 	m_MouseLastPos(glm::vec2(0.0f, 0.0f)),
-	m_Yaw(0.0f),
+	m_Yaw(180.0f),
 	m_Pitch(0.0f),
-	m_MouseOffset(glm::vec2(0.0f, 0.0f))
+	m_MouseOffset(glm::vec2(0.0f, 0.0f)),
+	m_FirstMouse(true)
 {
 	glfwSetKeyCallback(m_Window, KeyCallbackStatic);
 	glfwSetWindowUserPointer(m_Window, reinterpret_cast<void*>(this));
@@ -51,7 +52,7 @@ void InputManager::KeyCallback(GLFWwindow* _window, int key, int scancode, int a
 		else if (action == GLFW_RELEASE)
 			m_Keys[key] = false;
 
-		
+
 		switch (key) {
 		case GLFW_KEY_ESCAPE:
 			if (action == GLFW_PRESS)
@@ -132,4 +133,51 @@ glm::vec2 InputManager::GetMouseLastPosition() {
 
 glm::vec2 InputManager::GetMouseOffset() {
 	return m_MouseOffset;
+}
+
+
+void InputManager::Reset(glm::vec3& cameraDirection) {
+	// get first yaw and pitch	
+	m_Yaw = glm::degrees(atan2(cameraDirection.z, cameraDirection.x));
+	m_Pitch = glm::degrees(asin(cameraDirection.y));
+	m_FirstMouse = true;
+}
+
+// todo: refactor this garbage
+void InputManager::HandleMouse(glm::vec3* cameraDirection) {
+	// prevent mouse drift
+	if (this->GetMousePosition() == this->GetMouseLastPosition()) {
+		return;
+	}
+	// prevent initial mouse snap
+	if (m_FirstMouse)
+	{
+		m_FirstMouse = false;
+		m_MouseLastPos = this->GetMousePosition();
+		return;
+	}
+
+	float xoffset = this->GetMouseOffset().x;
+	float yoffset = this->GetMouseOffset().y;
+
+	const float sensitivity = 0.1f;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	// clamp yaw to avoid losing precision of floats
+	m_Yaw = glm::mod(m_Yaw + xoffset, (GLfloat)360.0f);
+	m_Pitch += yoffset;
+
+	if (m_Pitch > 89.0f)
+		m_Pitch = 89.0f;
+	if (m_Pitch < -89.0f)
+		m_Pitch = -89.0f;
+
+	glm::vec3 direction = glm::vec3(0.0f);
+	direction.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+	direction.y = sin(glm::radians(m_Pitch));
+	direction.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+	*cameraDirection = glm::normalize(direction);
+
+	m_MouseLastPos = this->GetMousePosition();
 }

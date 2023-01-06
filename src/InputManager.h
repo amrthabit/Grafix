@@ -5,7 +5,11 @@
 #include "glm/glm.hpp"
 #include "Screenshot.h"
 #include "imgui/imgui.h"
+#include <functional>
 
+struct CameraConfig {
+	glm::vec3 position, direction, up;
+};
 
 class InputManager
 {
@@ -29,17 +33,20 @@ public:
 	glm::vec2 GetMousePosition();
 	glm::vec2 GetMouseLastPosition();
 	glm::vec2 GetMouseOffset();
+	void Reset(glm::vec3& m_CameraDirection);
+	void HandleMouse(glm::vec3* m_CameraDirection);
 
 private:
 	GLFWwindow* m_Window;
-	
+
 	bool m_Keys[1024];
 	bool m_MouseButtons[32];
 	bool m_ImGuiWindowCollapsed;
-	
+
 	float m_Yaw;
 	float m_Pitch;
-	
+	bool m_FirstMouse;
+
 	glm::vec2 m_MousePosition;
 	glm::vec2 m_MouseLastPos;
 	glm::vec2 m_MouseOffset;

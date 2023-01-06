@@ -17,15 +17,41 @@
 
 #include <memory>
 
-#define BUCKET 0
-#define FLOOR 1
-#define TIMMY 2
 #define SHAPES_COUNT 3
+
+enum Lights {
+	NONE,
+	ONE,
+	ONE_ROTATING,
+	DISCO,
+	DISCO_ROTATING
+};
+
+enum Indices {
+	BUCKET_IDX,
+	FLOOR_IDX,
+	TIMMY_IDX
+};
+
+enum Shapes {
+	BUCKET = 1 << 0,
+	FLOOR = 1 << 1,
+	TIMMY = 1 << 2
+};
 
 struct Faces {
 	tinyobj::attrib_t attrib[SHAPES_COUNT];
 	std::vector<tinyobj::shape_t> shapes[SHAPES_COUNT];
 	std::vector<tinyobj::material_t> materials[SHAPES_COUNT];
+};
+
+struct LightConfig {
+	float x;
+	float y;
+	float z;
+	float kc;
+	float kl;
+	float kq;
 };
 
 namespace test {
@@ -35,19 +61,16 @@ namespace test {
 		TestDisco(TestMenu* testMenu,
 			InputManager* inputManager,
 			std::shared_ptr<Faces> faces,
-			bool bucket = false,
-			bool floor = false,
-			bool timmy = false,
-			bool light = false,
-			bool disco = false,
-			bool rotating = false
+			std::shared_ptr<Texture> textures[3],
+			int objects,
+			int lights = NONE,
+			LightConfig attenuation = { 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f }
 		);
 		~TestDisco();
 
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;
 		void OnImGuiRender() override;
-		void HandleMouse();
 		void HandleKeys();
 		void LeaveTest();
 
@@ -55,18 +78,14 @@ namespace test {
 		std::unique_ptr<VertexArray> m_VAOs[SHAPES_COUNT];
 		std::unique_ptr<VertexBuffer> m_VertexBuffers[SHAPES_COUNT];
 		std::unique_ptr<IndexBuffer> m_IndexBuffers[SHAPES_COUNT];
-		std::unique_ptr<Texture> m_Textures[SHAPES_COUNT];
+		std::shared_ptr<Texture> m_Textures[SHAPES_COUNT];
 		std::unique_ptr<Shader> m_Shader;
 
 		TestMenu* m_TestMenu;
 		InputManager* m_InputManager;
 
 		glm::mat4 m_Proj, m_View;
-		glm::vec3 m_CameraPosition, m_CameraDirection, m_CameraUp;
-
-		bool m_FirstMouse;
-		glm::vec2 m_MouseLastPos;
-		float m_Yaw, m_Pitch;
+		CameraConfig m_Camera;
 
 		std::unique_ptr<std::vector<float>> m_Vertices[SHAPES_COUNT];
 		std::unique_ptr<std::vector<unsigned int>> m_Indices[SHAPES_COUNT];
@@ -76,16 +95,8 @@ namespace test {
 		std::vector<tinyobj::shape_t> m_Shapes;
 		std::vector<tinyobj::material_t> m_Materials;
 
-		bool m_Floor;
-		bool m_Bucket;
-		bool m_Timmy;
-
-		bool m_Rotating;
-		bool m_Light;
-		bool m_Disco;
-
-		float m_LightPosTheta;
-
-		ImVec2 m_ImGuiWindowPos;
+		int m_Objects;
+		int m_Lights;
+		float m_Theta;
 	};
 }

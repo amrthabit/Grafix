@@ -12,6 +12,8 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tinyobjloader/tinyobjloader.h"
 
+#define COEFFICIENT 1e-4
+
 using namespace test;
 
 class A3 {
@@ -28,6 +30,8 @@ public:
 	Renderer renderer;
 	Test* currentTest;
 	TestMenu* testMenu;
+
+	std::shared_ptr<Texture> m_Textures[3];
 
 	A3(GLFWwindow* window) :
 		currentTest(nullptr),
@@ -47,29 +51,42 @@ public:
 
 		std::cout << "Loading shapes... " << std::endl;
 
-		bSuc = tinyobj::LoadObj(&faces->attrib[TIMMY], &faces->shapes[TIMMY], &faces->materials[TIMMY], &warn, &err,
+		bSuc = tinyobj::LoadObj(&faces->attrib[TIMMY_IDX], &faces->shapes[TIMMY_IDX], &faces->materials[TIMMY_IDX], &warn, &err,
 			"./a3data/asset/timmy.obj", nullptr, bTriangulate);
 		if (!bSuc)
 			std::cout << "tinyobj error: " << err.c_str() << std::endl;
 
-		bSuc = tinyobj::LoadObj(&faces->attrib[BUCKET], &faces->shapes[BUCKET], &faces->materials[BUCKET], &warn, &err,
+		bSuc = tinyobj::LoadObj(&faces->attrib[BUCKET_IDX], &faces->shapes[BUCKET_IDX], &faces->materials[BUCKET_IDX], &warn, &err,
 			"./a3data/asset/bucket.obj", nullptr, bTriangulate);
 		if (!bSuc)
 			std::cout << "tinyobj error: " << err.c_str() << std::endl;
 
-		bSuc = tinyobj::LoadObj(&faces->attrib[FLOOR], &faces->shapes[FLOOR], &faces->materials[FLOOR], &warn, &err,
+		bSuc = tinyobj::LoadObj(&faces->attrib[FLOOR_IDX], &faces->shapes[FLOOR_IDX], &faces->materials[FLOOR_IDX], &warn, &err,
 			"./a3data/asset/floor.obj", nullptr, bTriangulate);
 		if (!bSuc)
 			std::cout << "tinyobj error: " << err.c_str() << std::endl;
-		
 
-		testMenu->RegisterTest<test::TestDisco>("timmy", faces, false, false, true);
-		testMenu->RegisterTest<test::TestDisco>("bucket", faces, true, false, false);
-		testMenu->RegisterTest<test::TestDisco>("floor", faces, false, true, false);
-		testMenu->RegisterTest<test::TestDisco>("bucketOnFloor", faces, true, true, false);
-		testMenu->RegisterTest<test::TestDisco>("all", faces, true, true, true);
-		testMenu->RegisterTest<test::TestDisco>("alld", faces, true, true, true, false, true, false);
 
+		m_Textures[0] = std::make_shared<Texture>("./a3data/asset/bucket.jpg");
+		m_Textures[1] = std::make_shared<Texture>("./a3data/asset/floor.jpeg");
+		m_Textures[2] = std::make_shared<Texture>("./a3data/asset/timmy.png");
+
+		LightConfig config1 = { 300, -10, -100, 1, 0.35 * COEFFICIENT, 0.44 * COEFFICIENT };
+		LightConfig config2 = { -50, 0, 300, 1, 0.007 * COEFFICIENT, 0.0002 * COEFFICIENT };
+		LightConfig config3 = { 0, 200, 0, 1, 0.35 * COEFFICIENT, 0.44 * COEFFICIENT };
+
+		testMenu->RegisterTest<test::TestDisco>("timmy_tex", faces, m_Textures, TIMMY);
+		testMenu->RegisterTest<test::TestDisco>("bucket_tex", faces, m_Textures, BUCKET);
+		testMenu->RegisterTest<test::TestDisco>("floor_tex", faces, m_Textures, FLOOR);
+		testMenu->RegisterTest<test::TestDisco>("bucketOnFloor_tex", faces, m_Textures, BUCKET | FLOOR);
+		testMenu->RegisterTest<test::TestDisco>("timmy_point1", faces, m_Textures, TIMMY, ONE, config1);
+		testMenu->RegisterTest<test::TestDisco>("bucket_point1", faces, m_Textures, BUCKET, ONE, config1);
+		testMenu->RegisterTest<test::TestDisco>("timmy_point2", faces, m_Textures, TIMMY, ONE, config2);
+		testMenu->RegisterTest<test::TestDisco>("bucket_point2", faces, m_Textures, BUCKET, ONE, config2);
+		testMenu->RegisterTest<test::TestDisco>("timmy_point_dyn", faces, m_Textures, TIMMY, ONE_ROTATING, config2);
+		testMenu->RegisterTest<test::TestDisco>("bucket_point_dyn", faces, m_Textures, BUCKET, ONE_ROTATING, config2);
+		testMenu->RegisterTest<test::TestDisco>("at_disco", faces, m_Textures, TIMMY | BUCKET | FLOOR, DISCO, config3);
+		testMenu->RegisterTest<test::TestDisco>("at_disco_dyn", faces, m_Textures, TIMMY | BUCKET | FLOOR, DISCO_ROTATING, config3);
 	}
 
 	~A3()

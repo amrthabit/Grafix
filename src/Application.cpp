@@ -11,6 +11,8 @@
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
 int main()
 {
 	GLFWwindow* window;
@@ -31,6 +33,8 @@ int main()
 
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
+
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	
 	if (glewInit() != GLEW_OK)
 		std::cout << "GLEWINIT ERR" << std::endl;
@@ -54,4 +58,9 @@ int main()
 	}
 	glfwTerminate();
 	return 0;
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
 }

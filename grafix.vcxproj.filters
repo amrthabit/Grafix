@@ -489,6 +489,8 @@
     <None Include="res\shaders\Color.shader" />
     <None Include="res\shaders\A2Default.shader" />
     <None Include="res\shaders\A3.shader" />
+    <None Include="res\shaders\A3Basic.shader" />
+    <None Include="res\shaders\A3Disco.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">
